@@ -1,0 +1,38 @@
+# Python Bytecode and Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.env
+.env.local
+.venv/
+venv/
+ENV/
+env/
+
+# Outputs & Temporary files
+RecommendationSystem/outputs/*.txt
+RecommendationSystem/outputs/*.json
+outputs/*.txt
+outputs/*.json
+!RecommendationSystem/outputs/.gitkeep
+
+# Models Cache & Large Weights
+RecommendationSystem/models/*
+!RecommendationSystem/models/.gitkeep
+*.pt
+*.bin
+*.onnx
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor Settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace

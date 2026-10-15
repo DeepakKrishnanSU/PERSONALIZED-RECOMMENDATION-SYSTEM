@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NexusAI - Next-Generation Cognitive Recommendation Engine powered by GPT-4 and Large Language Models. Experience hyper-personalized learning journeys, instant intent decoding, and dynamic preference refinement.">
+  <title>NexusAI &mdash; Autonomous Personalized Recommendation Intelligence</title>
+
+  <!-- Google Fonts & Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236366f1'/></svg>">
+
+  <!-- Lucide Icons (CDN - Pinned) -->
+  <script defer src="https://unpkg.com/lucide@0.453.0"></script>
+
+  <!-- Application Stylesheets -->
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/nexus-enhance.css">
+</head>
+<body class="theme-dark antialiased">
+  <!-- Interactive Ambient Cybernetic Mesh Glow -->
+  <div class="mesh-canvas-container" aria-hidden="true">
+    <div class="glow-orb orb-primary"></div>
+    <div class="glow-orb orb-secondary"></div>
+    <div class="glow-orb orb-accent"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Main Application Wrapper -->
+  <div class="app-layout" id="appRoot">
+
+    <!-- Global Floating Top Navigation -->
+    <header class="top-navbar" id="mainHeader">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <div class="brand-logo">
+            <i data-lucide="sparkles" class="brand-icon"></i>
+            <span class="logo-pulse"></span>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Nexus<span class="gradient-text">AI</span></span>
+            <span class="brand-subtitle">Recommendation Intelligence</span>
+          </div>
+        </div>
+
+        <nav class="nav-menu" aria-label="Main Navigation">
+          <a href="#heroSection" class="nav-link active" id="navHome">
+            <i data-lucide="home"></i>
+            <span>Overview</span>
+          </a>
+          <a href="#studioSection" class="nav-link" id="navStudio">
+            <i data-lucide="cpu"></i>
+            <span>Studio</span>
+          </a>
+          <a href="#rankingsSection" class="nav-link" id="navRankings">
+            <i data-lucide="bar-chart-3"></i>
+            <span>Rankings</span>
+          </a>
+          <a href="#intentConsole" class="nav-link" id="navIntent">
+            <i data-lucide="terminal"></i>
+            <span>Intent Engine</span>
+          </a>
+        </nav>
+
+        <div class="nav-actions">
+          <div class="engine-status-pill" id="engineStatusBadge" title="LLM Provider Status">
+            <span class="status-dot online"></span>
+            <span class="engine-name" id="activeProviderName">{{ llm_info.provider|upper }}</span>
+            <span class="engine-model" id="activeModelName">{{ llm_info.groq_model if llm_info.provider == 'groq' else llm_info.ollama_model }}</span>
+          </div>
+          <button class="btn btn-glass btn-sm" id="btnOpenArchModal" title="System Architecture Workflow">
+            <i data-lucide="git-merge"></i>
+            <span>Architecture</span>
+          </button>
+          <button class="btn btn-glass btn-sm" id="btnQuickSample" title="Load High-Value Sample Profile">
+            <i data-lucide="zap"></i>
+            <span>Demo Profile</span>
+          </button>
+          <button class="btn btn-outline btn-sm" id="btnExportSession" title="Save Session & Download">
+            <i data-lucide="download"></i>
+            <span>Export</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-viewport">
+
+      <!-- ======================================================== -->
+      <!-- SECTION 1: HERO / HOME SCREEN                            -->
+      <!-- ======================================================== -->
+      <section class="hero-section" id="heroSection">
+        <div class="section-container hero-grid">
+          <div class="hero-content">
+            <div class="badge-pill hero-badge">
+              <span class="pill-badge-tag">GPT-4 Cognitive Core</span>
+              <span class="pill-badge-text">Semantic Curriculum Engine v4.0</span>
+            </div>
+            <h1 class="hero-headline">
+              Precision Learning Paths <br>
+              <span class="gradient-text">Engineered for Your Future.</span>
+            </h1>
+            <p class="hero-description">
+              Stop sifting through hundreds of generic tutorials. NexusAI analyzes your unique background, technical ambitions, and learning habits to synthesize ranked, verified, and continuously refined learning recommendations in seconds.
+            </p>
+
+            <div class="hero-cta-group">
+              <a href="#studioSection" class="btn btn-primary btn-lg" id="btnGetStarted">
+                <span>Configure My Path</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
+              <button class="btn btn-secondary btn-lg" id="btnExploreIntents">
+                <i data-lucide="bot"></i>
+                <span>Interactive Intent Agent</span>
+              </button>
+            </div>
+
+            <!-- Trust / Stats Bar -->
+            <div class="hero-metrics">
+              <div class="metric-item">
+                <span class="metric-value">99.4%</span>
+                <span class="metric-label">Relevance Precision</span>
+              </div>
+              <div class="metric-divider"></div>
+              <div class="metric-item">
+                <span class="metric-value">&lt; 1.2s</span>
+                <span class="metric-label">Inference Latency</span>
+              </div>
+              <div class="metric-divider"></div>
+              <div class="metric-item">
+                <span class="metric-value">100%</span>
+                <span class="metric-label">Dynamic Refinement</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Graphic: Live Interactive Preview Terminal -->
+          <div class="hero-terminal-wrapper">
+            <div class="glass-terminal" id="heroTerminal">
+              <div class="terminal-header">
+                <div class="terminal-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="terminal-title">
+                  <i data-lucide="sparkle"></i>
+                  <span>Cognitive Neural Architecture</span>
+                </div>
+                <div class="terminal-badge">LIVE INFERENCE</div>
+              </div>
+
+              <div class="terminal-body">
+                <div class="terminal-row code-comment">// Pipeline execution graph</div>
+                <div class="pipeline-flow-mini">
+                  <div class="flow-node active"><i data-lucide="user"></i><span>Profile</span></div>
+                  <div class="flow-arrow">&rarr;</div>
+                  <div class="flow-node active"><i data-lucide="brain"></i><span>Preferences</span></div>
+                  <div class="flow-arrow">&rarr;</div>
+                  <div class="flow-node active"><i data-lucide="binary"></i><span>Prompt</span></div>
+                  <div class="flow-arrow">&rarr;</div>
+                  <div class="flow-node active"><i data-lucide="cpu"></i><span>LLM Synthesis</span></div>
+                  <div class="flow-arrow">&rarr;</div>
+                  <div class="flow-node active"><i data-lucide="award"></i><span>Rankings</span></div>
+                </div>
+
+                <div class="terminal-code-block">
+                  <pre><code class="language-json">{
+  <span class="code-key">"agent"</span>: <span class="code-str">"NexusAI-GPT4"</span>,
+  <span class="code-key">"user"</span>: <span class="code-str">"Arun"</span>,
+  <span class="code-key">"primary_interest"</span>: <span class="code-str">"Artificial Intelligence"</span>,
+  <span class="code-key">"learning_style"</span>: <span class="code-str">"Practical & Hands-on"</span>,
+  <span class="code-key">"top_match"</span>: <span class="code-str">"Python for AI [95% Match]"</span>,
+  <span class="code-key">"status"</span>: <span class="code-str">"Ready for interactive refinement"</span>
+}</code></pre>
+                </div>
+
+                <div class="terminal-footer-strip">
+                  <span class="indicator-live"></span>
+                  <span>Model: GPT-OSS-120B / Llama-3.2 Native Bridge</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 2: RECOMMENDATION STUDIO (WORKFLOW)              -->
+      <!-- ======================================================== -->
+      <section class="studio-section" id="studioSection">
+        <div class="section-container">
+
+          <!-- Section Section Header -->
+          <div class="section-heading text-center">
+            <span class="section-kicker">Interactive Studio</span>
+            <h2 class="section-title">Shape Your Personalized Trajectory</h2>
+            <p class="section-lead">Define your aspirational milestones, evaluate your cognitive profile, and inspect real-time AI prompts.</p>
+          </div>
+
+          <!-- Studio Layout Grid -->
+          <div class="studio-grid">
+
+            <!-- Left Column: User Profile Configuration Form -->
+            <div class="studio-card profile-config-card" id="profileInputCard">
+              <div class="card-header">
+                <div class="header-icon-box">
+                  <i data-lucide="user-check"></i>
+                </div>
+                <div>
+                  <h3 class="card-title">Learner Profile Specification</h3>
+                  <p class="card-caption">Provide details to train your recommendation persona</p>
+                </div>
+              </div>
+
+              <form class="card-form" id="profileForm" novalidate>
+                <div class="form-row-duo">
+                  <div class="form-group">
+                    <label for="inputName" class="form-label">Full Name <span class="req">*</span></label>
+                    <div class="input-with-icon">
+                      <i data-lucide="user" class="input-icon"></i>
+                      <input type="text" id="inputName" class="form-input" placeholder="e.g. Arun" value="Arun" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputAge" class="form-label">Age <span class="req">*</span></label>
+                    <div class="input-with-icon">
+                      <i data-lucide="calendar" class="input-icon"></i>
+                      <input type="number" id="inputAge" class="form-input" placeholder="e.g. 20" value="20" min="10" max="100" required>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputBackground" class="form-label">Educational / Professional Background <span class="req">*</span></label>
+                  <div class="input-with-icon">
+                    <i data-lucide="graduation-cap" class="input-icon"></i>
+                    <input type="text" id="inputBackground" class="form-input" placeholder="e.g. Computer Science" value="Computer Science" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputInterests" class="form-label">Core Interests (comma-separated) <span class="req">*</span></label>
+                  <div class="input-with-icon">
+                    <i data-lucide="sparkles" class="input-icon"></i>
+                    <input type="text" id="inputInterests" class="form-input" placeholder="e.g. Artificial Intelligence, Python" value="Artificial Intelligence, Python" required>
+                  </div>
+                  <div class="tag-chips-wrapper">
+                    <button type="button" class="chip-tag" data-interest="Machine Learning">+ ML</button>
+                    <button type="button" class="chip-tag" data-interest="Deep Learning">+ Deep Learning</button>
+                    <button type="button" class="chip-tag" data-interest="Generative AI">+ Generative AI</button>
+                    <button type="button" class="chip-tag" data-interest="Computer Vision">+ Computer Vision</button>
+                  </div>
+                </div>
+
+                <div class="form-row-duo">
+                  <div class="form-group">
+                    <label for="selectSkillLevel" class="form-label">Skill Proficiency</label>
+                    <div class="select-with-icon">
+                      <i data-lucide="bar-chart-2" class="input-icon"></i>
+                      <select id="selectSkillLevel" class="form-select">
+                        <option value="Beginner" selected>Beginner (Fundamentals)</option>
+                        <option value="Intermediate">Intermediate (Practitioner)</option>
+                        <option value="Advanced">Advanced (Architect)</option>
+                        <option value="Expert">Expert (Researcher)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="selectCategory" class="form-label">Preferred Format</label>
+                    <div class="select-with-icon">
+                      <i data-lucide="layers" class="input-icon"></i>
+                      <select id="selectCategory" class="form-select">
+                        <option value="Practical learning" selected>Practical / Project-Based</option>
+                        <option value="Video masterclasses">Video Masterclasses</option>
+                        <option value="Interactive code notebooks">Interactive Notebooks</option>
+                        <option value="Academic papers and textbooks">Academic Books</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row-duo">
+                  <div class="form-group">
+                    <label for="inputGoal" class="form-label">Ultimate Goal <span class="req">*</span></label>
+                    <div class="input-with-icon">
+                      <i data-lucide="target" class="input-icon"></i>
+                      <input type="text" id="inputGoal" class="form-input" placeholder="e.g. Learn AI" value="Learn AI" required>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputCount" class="form-label">Recommendations Count</label>
+                    <div class="input-with-icon">
+                      <i data-lucide="list-ordered" class="input-icon"></i>
+                      <input type="number" id="inputCount" class="form-input" value="5" min="1" max="10">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary btn-block" id="btnSynthesizeProfile">
+                    <i data-lucide="wand-2"></i>
+                    <span>Analyze Profile & Construct Prompt</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Right Column: Dual Tabs (Collected Profile & Preference Analysis & Prompt) -->
+            <div class="studio-card results-preview-card" id="profileAnalysisCard">
+              <div class="card-header border-b">
+                <div class="tab-switcher" role="tablist">
+                  <button class="tab-btn active" id="tabCollectedProfile" role="tab" aria-selected="true" data-tab="tabContentProfile">
+                    <i data-lucide="id-card"></i>
+                    <span>Active Profile</span>
+                  </button>
+                  <button class="tab-btn" id="tabPreferenceAnalysis" role="tab" aria-selected="false" data-tab="tabContentAnalysis">
+                    <i data-lucide="compass"></i>
+                    <span>Cognitive Analysis</span>
+                  </button>
+                  <button class="tab-btn" id="tabPromptPreview" role="tab" aria-selected="false" data-tab="tabContentPrompt">
+                    <i data-lucide="code"></i>
+                    <span>Formulated Prompt</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="card-body tab-body-container">
+                <!-- Tab 1: Collected User Profile -->
+                <div class="tab-panel active" id="tabContentProfile">
+                  <div class="profile-hero-badge">
+                    <div class="avatar-circle" id="profileAvatarInitial">A</div>
+                    <div class="profile-meta-header">
+                      <h4 class="profile-name" id="displayProfileName">Arun</h4>
+                      <div class="profile-chips">
+                        <span class="chip chip-blue" id="displayProfileBackground">Computer Science</span>
+                        <span class="chip chip-purple" id="displayProfileLevel">Beginner</span>
+                        <span class="chip chip-green" id="displayProfileAge">20 Years</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="spec-grid">
+                    <div class="spec-tile">
+                      <span class="spec-label">Domain Interests</span>
+                      <div class="spec-value" id="displayProfileInterests">Artificial Intelligence, Python</div>
+                    </div>
+                    <div class="spec-tile">
+                      <span class="spec-label">Learning Preference</span>
+                      <div class="spec-value" id="displayProfilePreference">Practical learning</div>
+                    </div>
+                    <div class="spec-tile">
+                      <span class="spec-label">Target Milestone</span>
+                      <div class="spec-value highlight" id="displayProfileGoal">Learn AI</div>
+                    </div>
+                    <div class="spec-tile">
+                      <span class="spec-label">Batch Size</span>
+                      <div class="spec-value" id="displayProfileCount">5 Recommendations</div>
+                    </div>
+                  </div>
+
+                  <div class="card-notice">
+                    <i data-lucide="shield-check"></i>
+                    <span>Profile validated against schema and normalized for LLM token ingestion.</span>
+                  </div>
+                </div>
+
+                <!-- Tab 2: Preference Analysis -->
+                <div class="tab-panel" id="tabContentAnalysis">
+                  <div class="analysis-radar-card">
+                    <div class="analysis-row">
+                      <div class="analysis-col">
+                        <span class="analysis-sub">Primary Anchor</span>
+                        <h4 class="analysis-highlight" id="displayPrimaryInterest">Artificial Intelligence</h4>
+                      </div>
+                      <div class="analysis-divider"></div>
+                      <div class="analysis-col">
+                        <span class="analysis-sub">Secondary Driver</span>
+                        <h4 class="analysis-highlight" id="displaySecondaryInterest">Python</h4>
+                      </div>
+                    </div>
+
+                    <div class="analysis-attributes-box">
+                      <div class="attr-pill">
+                        <span class="attr-name">Cognitive Level</span>
+                        <span class="attr-badge badge-cyan" id="displaySkillTag">Beginner</span>
+                      </div>
+                      <div class="attr-pill">
+                        <span class="attr-name">Delivery Mode</span>
+                        <span class="attr-badge badge-violet" id="displayFormatTag">Practical</span>
+                      </div>
+                      <div class="attr-pill">
+                        <span class="attr-name">Learning Vector</span>
+                        <span class="attr-badge badge-emerald" id="displayGoalTag">Learn AI</span>
+                      </div>
+                    </div>
+
+                    <div class="constraints-box">
+                      <div class="constraints-title">
+                        <i data-lucide="info"></i>
+                        <span>Extracted Pedagogical Constraints</span>
+                      </div>
+                      <p class="constraints-text" id="displayConstraintsText">
+                        Structured for beginner-friendly, hands-on, code-first immersion with zero excessive mathematical overhead.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tab 3: Formulated Prompt -->
+                <div class="tab-panel" id="tabContentPrompt">
+                  <div class="prompt-meta-strip">
+                    <span class="prompt-lang-tag">Structured GPT-4 Prompt Template</span>
+                    <button class="btn btn-copy btn-xs" id="btnCopyPrompt" title="Copy Raw Prompt">
+                      <i data-lucide="copy"></i>
+                      <span>Copy</span>
+                    </button>
+                  </div>
+                  <div class="code-editor-box">
+                    <pre><code id="displayPromptCode" class="language-markdown">You are a personalized recommendation assistant.
+
+User:
+Name: Arun
+Background: Computer Science
+Interests: Artificial Intelligence, Python
+Skill Level: Beginner
+Goal: Learn AI
+Preference: Practical learning
+
+Recommend five suitable learning resources.
+
+For each recommendation provide:
+1. Name
+2. Reason
+3. Suitability score</code></pre>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Bar to Trigger Generation -->
+              <div class="card-footer">
+                <button class="btn btn-accent btn-block btn-lg" id="btnGenerateRecommendations">
+                  <i data-lucide="sparkles"></i>
+                  <span>Execute Neural Generation & Ranking</span>
+                  <span class="btn-spinner" id="genSpinner" style="display: none;"></span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 3: RECOMMENDATION ENGINE & LEADERBOARD           -->
+      <!-- ======================================================== -->
+      <section class="results-section" id="rankingsSection">
+        <div class="section-container">
+
+          <div class="section-heading text-center">
+            <span class="section-kicker">Synthesized Candidates</span>
+            <h2 class="section-title">Personalized Recommendations & Rankings</h2>
+            <p class="section-lead">Ranked in descending order of suitability, powered by semantic scoring and Pandas analytics.</p>
+          </div>
+
+          <!-- Top Status Strip -->
+          <div class="results-meta-bar" id="resultsMetaBar">
+            <div class="meta-item">
+              <i data-lucide="layers"></i>
+              <span>Total Curated: <strong id="valTotalItems">0 Items</strong></span>
+            </div>
+            <div class="meta-item">
+              <i data-lucide="award"></i>
+              <span>Top Score: <strong id="valTopScore">--%</strong></span>
+            </div>
+            <div class="meta-item">
+              <i data-lucide="cpu"></i>
+              <span>Engine: <strong id="valEngineProvider">{{ llm_info.provider|title }} ({{ llm_info.groq_model if llm_info.provider == 'groq' else (llm_info.openai_model if llm_info.provider == 'openai' else llm_info.ollama_model) }})</strong></span>
+            </div>
+          </div>
+
+          <!-- Dynamic Ranked Cards Grid -->
+          <div class="recommendations-stream" id="recommendationsList">
+            <!-- Initial Empty State -->
+            <div class="empty-state-card" id="emptyStatePlaceholder">
+              <div class="empty-icon-ring">
+                <i data-lucide="brain-circuit"></i>
+              </div>
+              <h3 class="empty-title">Awaiting Neural Synthesis</h3>
+              <p class="empty-desc">Click "Execute Neural Generation & Ranking" above to generate your customized curriculum and suitability rankings.</p>
+            </div>
+          </div>
+
+          <!-- Tabular Ranking Summary Box (Q6 Table Representation) -->
+          <div class="tabular-ranking-card" id="tabularRankingCard" style="display: none;">
+            <div class="table-card-header">
+              <div class="table-title">
+                <i data-lucide="list-ordered"></i>
+                <span>Suitability Ranking Leaderboard</span>
+              </div>
+              <span class="table-subtitle">Pandas Aggregated Scores</span>
+            </div>
+            <div class="table-responsive">
+              <table class="ranking-table" id="tableRankings">
+                <thead>
+                  <tr>
+                    <th scope="col" class="th-rank">Rank</th>
+                    <th scope="col" class="th-name">Recommendation</th>
+                    <th scope="col" class="th-score">Suitability Score</th>
+                    <th scope="col" class="th-status">Alignment</th>
+                  </tr>
+                </thead>
+                <tbody id="rankingTableBody">
+                  <!-- Populated via Javascript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 4: USER FEEDBACK & REFINEMENT LAB (Q8)          -->
+      <!-- ======================================================== -->
+      <section class="feedback-section" id="feedbackSection">
+        <div class="section-container">
+
+          <div class="refinement-glass-card" id="refinementStudioCard">
+            <div class="refinement-header">
+              <div class="refinement-icon-box">
+                <i data-lucide="message-square-plus"></i>
+              </div>
+              <div>
+                <h3 class="refinement-title">Continuous Feedback & Iterative Refinement</h3>
+                <p class="refinement-desc">Critique current suggestions, exclude unwanted disciplines, or calibrate the difficulty curve in real-time.</p>
+              </div>
+            </div>
+
+            <!-- Pre-made Suggestion Pills -->
+            <div class="feedback-quick-pills">
+              <span class="pills-title">Quick Adjustments:</span>
+              <button type="button" class="quick-pill" data-feedback="I prefer Artificial Intelligence and do not want Web Development resources.">
+                "Prefer AI, exclude Web Development"
+              </button>
+              <button type="button" class="quick-pill" data-feedback="Give me more beginner-friendly, visual video courses.">
+                "More beginner-friendly & visual"
+              </button>
+              <button type="button" class="quick-pill" data-feedback="Focus strictly on hands-on practical Python projects with code.">
+                "Hands-on Python projects only"
+              </button>
+            </div>
+
+            <div class="feedback-input-container">
+              <textarea id="inputUserFeedback" class="feedback-textarea" rows="3" placeholder="e.g. 'I prefer Artificial Intelligence and do not want Web Development resources. Please emphasize Python libraries.'"></textarea>
+              <div class="feedback-btn-group">
+                <button class="btn btn-secondary" id="btnClearFeedback">Clear</button>
+                <button class="btn btn-primary" id="btnSubmitFeedback">
+                  <i data-lucide="refresh-cw"></i>
+                  <span>Submit Feedback & Refine</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Refined Output Display Container -->
+            <div class="refined-results-drawer" id="refinedResultsDrawer" style="display: none;">
+              <div class="drawer-header">
+                <div class="drawer-title">
+                  <i data-lucide="check-circle-2"></i>
+                  <span>Refined Recommendation Output</span>
+                </div>
+                <div class="applied-feedback-pill" id="appliedFeedbackPill">Applied Feedback</div>
+              </div>
+              <div class="refined-items-grid" id="refinedItemsGrid">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 5: INTELLIGENT INTENT DETECTION CONSOLE (Q9)     -->
+      <!-- ======================================================== -->
+      <section class="intent-section" id="intentConsole">
+        <div class="section-container">
+
+          <div class="intent-box">
+            <div class="intent-header">
+              <div class="intent-header-left">
+                <div class="terminal-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <span class="intent-title-text"><i data-lucide="terminal"></i> Autonomous Cognitive Intent Decoder (Q9)</span>
+              </div>
+              <div class="supported-intents-strip">
+                <span class="intent-badge">GENERATE_RECOMMENDATION</span>
+                <span class="intent-badge">REFINE_RECOMMENDATION</span>
+                <span class="intent-badge">SHOW_PROFILE</span>
+                <span class="intent-badge">EXPLAIN_RECOMMENDATION</span>
+                <span class="intent-badge">SAVE_RECOMMENDATION</span>
+                <span class="intent-badge">EXIT</span>
+              </div>
+            </div>
+
+            <div class="intent-body">
+              <p class="intent-prompt-caption">
+                Type any natural language command or conversational request below. The engine utilizes few-shot classification to deduce your underlying intent and trigger system actions:
+              </p>
+
+              <!-- Quick intent chips from PDF examples -->
+              <div class="intent-sample-chips">
+                <button type="button" class="intent-chip" data-query="Recommend some AI courses.">
+                  "Recommend some AI courses."
+                </button>
+                <button type="button" class="intent-chip" data-query="Give me more beginner-friendly options.">
+                  "Give me more beginner-friendly options."
+                </button>
+                <button type="button" class="intent-chip" data-query="Why did you recommend this course?">
+                  "Why did you recommend this course?"
+                </button>
+                <button type="button" class="intent-chip" data-query="Show my profile and preferences.">
+                  "Show my profile"
+                </button>
+                <button type="button" class="intent-chip" data-query="Save these recommendations to file.">
+                  "Save recommendations"
+                </button>
+                <button type="button" class="intent-chip" data-query="Exit application.">
+                  "Exit"
+                </button>
+              </div>
+
+              <div class="intent-interactive-bar">
+                <div class="intent-input-wrap">
+                  <span class="terminal-prompt-char">&gt;</span>
+                  <input type="text" id="inputIntentQuery" class="intent-input" placeholder="Type a command e.g. 'Recommend some AI courses' or 'Why did you recommend this course?'">
+                </div>
+                <button class="btn btn-primary" id="btnDetectIntent">
+                  <i data-lucide="cpu"></i>
+                  <span>Decode Intent</span>
+                </button>
+              </div>
+
+              <!-- Real-time Intent Result Panel -->
+              <div class="intent-result-card" id="intentResultCard" style="display: none;">
+                <div class="intent-result-header">
+                  <span class="result-label">Detected Intent:</span>
+                  <span class="intent-highlight-tag" id="valDetectedIntent">GENERATE_RECOMMENDATION</span>
+                </div>
+                <div class="intent-result-detail">
+                  <span class="detail-label">Classification Rationale:</span>
+                  <span class="detail-text" id="valIntentRationale">User expresses explicit intent to retrieve learning materials.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 6: PERSISTENCE & OUTPUT VAULT (Q10)              -->
+      <!-- ======================================================== -->
+      <section class="save-section" id="saveSection">
+        <div class="section-container">
+          <div class="save-vault-banner" id="saveVaultBanner">
+            <div class="save-vault-content">
+              <div class="save-icon-circle">
+                <i data-lucide="file-check"></i>
+              </div>
+              <div class="save-text-block">
+                <h3 class="save-heading">Persist Recommendations to Output File</h3>
+                <p class="save-description">Export your complete session &mdash; including user profile, preference analysis, rankings, explanations, and refinement audit &mdash; directly to <code class="code-pill">outputs/recommendations.txt</code>.</p>
+              </div>
+            </div>
+            <div class="save-vault-action">
+              <button class="btn btn-success btn-lg" id="btnSaveToFile">
+                <i data-lucide="save"></i>
+                <span>Save Recommendations to File</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Save Confirmation Notification Toast/Banner -->
+          <div class="save-confirmation-card" id="saveConfirmationCard" style="display: none;">
+            <div class="conf-icon">
+              <i data-lucide="check-circle"></i>
+            </div>
+            <div class="conf-info">
+              <h4 class="conf-title" id="valSaveMessage">Recommendation Saved Successfully</h4>
+              <p class="conf-path" id="valSavePath">Path: outputs/recommendations.txt</p>
+              <span class="conf-timestamp" id="valSaveTimestamp">2026-10-15 16:30:00</span>
+            </div>
+            <button class="btn btn-glass btn-sm" id="btnViewSavedFile">
+              <i data-lucide="file-text"></i>
+              <span>Inspect Output</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Global Application Footer -->
+    <footer class="app-footer">
+      <div class="footer-container">
+        <div class="footer-left">
+          <div class="footer-logo">Nexus<span class="gradient-text">AI</span></div>
+          <p class="footer-copy">24CS2506 &ndash; Building Applications using GPT-4 &bull; Experiment 4: Personalized Recommendation System</p>
+        </div>
+        <div class="footer-right">
+          <span class="footer-meta">Powered by Groq Cloud, Ollama, Pandas & Sentence-Transformers</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Interactive Explanation Modal -->
+    <div class="modal-overlay" id="explanationModal" style="display: none;" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <i data-lucide="book-open"></i>
+            <h3 class="modal-title" id="modalItemTitle">Recommendation Analysis</h3>
+          </div>
+          <button class="modal-close-btn" id="btnCloseModal" aria-label="Close modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-score-chip" id="modalItemScore">Suitability Score: 95%</div>
+          <div class="modal-explanation-content" id="modalExplanationContent">
+            Generating deep pedagogical rationale...
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-sm" id="btnDismissModal">Dismiss</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- File Inspector Modal -->
+    <div class="modal-overlay" id="fileInspectorModal" style="display: none;" aria-hidden="true">
+      <div class="modal-card modal-lg">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <i data-lucide="file-text"></i>
+            <h3 class="modal-title">outputs/recommendations.txt Inspector</h3>
+          </div>
+          <button class="modal-close-btn" id="btnCloseFileModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <pre class="file-code-preview"><code id="filePreviewContent">Loading file contents...</code></pre>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary btn-sm" id="btnDismissFileModal">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- System Architecture Workflow Modal (For Lab Record Screenshot) -->
+    <div class="modal-overlay" id="architectureModal" style="display: none;" aria-hidden="true">
+      <div class="modal-card modal-lg">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <i data-lucide="git-merge"></i>
+            <h3 class="modal-title">End-to-End System Architecture</h3>
+          </div>
+          <button class="modal-close-btn" id="btnCloseArchModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="arch-flowchart-container">
+            <div class="arch-step-node node-blue">
+              <i data-lucide="user"></i>
+              <div class="node-content">
+                <strong>User Input</strong>
+                <span>Name, Age, Education, Interests, Goals</span>
+              </div>
+            </div>
+            <div class="arch-flow-down">&darr;</div>
+            <div class="arch-step-node node-teal">
+              <i data-lucide="id-card"></i>
+              <div class="node-content">
+                <strong>User Profile</strong>
+                <span>Structured data schema & validation</span>
+              </div>
+            </div>
+            <div class="arch-flow-down">&darr;</div>
+            <div class="arch-step-node node-yellow">
+              <i data-lucide="compass"></i>
+              <div class="node-content">
+                <strong>Preference Analysis</strong>
+                <span>Primary & secondary interest vectors</span>
+              </div>
+            </div>
+            <div class="arch-flow-down">&darr;</div>
+            <div class="arch-step-node node-purple">
+              <i data-lucide="code-2"></i>
+              <div class="node-content">
+                <strong>Prompt Generation</strong>
+                <span>Dynamic few-shot instruction template</span>
+              </div>
+            </div>
+            <div class="arch-flow-down">&darr;</div>
+            <div class="arch-step-node node-pink">
+              <i data-lucide="sparkles"></i>
+              <div class="node-content">
+                <strong>GPT-4 / LLM Inference</strong>
+                <span>Groq OSS 120B / Ollama Llama 3.2</span>
+              </div>
+            </div>
+            <div class="arch-flow-down">&darr;</div>
+            <div class="arch-triad-box">
+              <div class="triad-pill"><i data-lucide="list"></i><span>Items</span></div>
+              <div class="triad-pill"><i data-lucide="help-circle"></i><span>Reasons</span></div>
+              <div class="triad-pill"><i data-lucide="trending-up"></i><span>Scores</span></div>
+            </div>
+            <div class="arch-flow-down">&darr;</div>
+            <div class="arch-step-node node-blue">
+              <i data-lucide="award"></i>
+              <div class="node-content">
+                <strong>Personalized Results & Rankings</strong>
+                <span>Pandas sorted suitability leaderboard</span>
+              </div>
+            </div>
+            <div class="arch-flow-down">&darr;</div>
+            <div class="arch-step-node node-coral">
+              <i data-lucide="message-square"></i>
+              <div class="node-content">
+                <strong>User Feedback & Intent Detection</strong>
+                <span>Autonomous natural language critique</span>
+              </div>
+            </div>
+            <div class="arch-flow-down">&darr;</div>
+            <div class="arch-step-node node-green">
+              <i data-lucide="refresh-cw"></i>
+              <div class="node-content">
+                <strong>Refined Recommendations</strong>
+                <span>Adaptive exclusions & updated scores</span>
+              </div>
+            </div>
+            <div class="arch-flow-down">&darr;</div>
+            <div class="arch-step-node node-indigo">
+              <i data-lucide="save"></i>
+              <div class="node-content">
+                <strong>Save Results</strong>
+                <span>Exported to outputs/recommendations.txt</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary btn-sm" id="btnDismissArchModal">Close Architecture View</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global Floating Toast Notification Container -->
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  </div>
+
+  <!-- Lucide Icon Initialization -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    });
+  </script>
+
+  <!-- Application Logic JavaScript -->
+  <script src="/static/js/app.js"></script>
+
+  <!-- NexusAI Progressive Enhancement Layer -->
+  <script defer src="/static/js/nexus-enhance.js"></script>
+</body>
+</html>

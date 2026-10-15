@@ -1,0 +1,11 @@
+# Core Web & Environment
+Flask>=3.0.0
+python-dotenv>=1.0.0
+requests>=2.31.0
+
+# LLM & Local Inference
+ollama>=0.6.0
+
+# Data Processing & Similarity Ranking
+pandas>=2.0.0
+sentence-transformers>=3.0.0

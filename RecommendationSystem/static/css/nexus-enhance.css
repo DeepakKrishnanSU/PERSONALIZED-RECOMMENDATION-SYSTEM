@@ -1,0 +1,268 @@
+/* NexusAI enhancement layer. Load AFTER style.css. */
+:root {
+  --text-muted: #9aa8bf;
+  --text-dim: #8795ad;
+  --mx: 50%;
+  --my: 50%;
+}
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Missing utilities */
+.text-center { text-align: center; }
+.badge-pill { white-space: nowrap; }
+
+/* Contrast: lift slate-500/600 text to AA on near-black */
+.metric-label, .brand-subtitle, .card-caption, .spec-label, .attr-name, .analysis-sub, .footer-copy, .footer-meta,
+.conf-timestamp, .conf-path, .table-subtitle, .detail-label, .terminal-row.code-comment, .engine-model, .pills-title,
+.prompt-lang-tag, .rec-rank-label, .empty-desc, .pill-badge-text, .tab-btn, .flow-node, .terminal-footer-strip,
+.arch-step-node .node-content span, .intent-badge, .modal-close-btn, .arch-flow-down, .flow-arrow {
+  color: var(--text-muted);
+}
+.tab-btn.active { color: #fff; }
+.input-icon { color: var(--text-dim); }
+
+/* Skip link + focus */
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -4rem;
+  z-index: 3000;
+  padding: .7rem 1.1rem;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: #05070c;
+  font-weight: 700;
+  text-decoration: none;
+  transition: top var(--transition-fast);
+}
+.skip-link:focus {
+  top: calc(1rem + env(safe-area-inset-top, 0px));
+}
+:focus-visible {
+  outline: 2px solid #a5b4fc;
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+.form-input:focus-visible, .form-select:focus-visible, .feedback-textarea:focus-visible, .intent-input:focus-visible {
+  outline: none;
+}
+.input-with-icon:focus-within .input-icon, .select-with-icon:focus-within .input-icon {
+  color: var(--accent-primary);
+}
+main:focus { outline: none; }
+
+/* Scroll progress */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  z-index: 3000;
+  background: var(--grad-primary);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: prog linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes prog {
+    to { transform: scaleX(1); }
+  }
+}
+
+/* Living gradient text */
+.gradient-text {
+  background-size: 220% 100%;
+  animation: hue 8s ease-in-out infinite alternate;
+}
+@keyframes hue {
+  to { background-position: 100% 0; }
+}
+
+/* Cursor spotlight on surfaces */
+.studio-card, .recommendation-card, .refinement-glass-card, .intent-box, .save-vault-banner, .tabular-ranking-card {
+  position: relative;
+  isolation: isolate;
+}
+.studio-card::after, .recommendation-card::after, .refinement-glass-card::after, .intent-box::after, .save-vault-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgba(129, 140, 248, .16), transparent 65%);
+  transition: opacity var(--transition-normal);
+}
+.studio-card:hover::after, .recommendation-card:hover::after, .refinement-glass-card:hover::after, .intent-box:hover::after, .save-vault-banner:hover::after {
+  opacity: 1;
+}
+
+/* Animated conic border */
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
+  .studio-card::before, .refinement-glass-card::before, .intent-box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: conic-gradient(from var(--angle), transparent 0 70%, #6366f1, #06b6d4, transparent);
+    opacity: 0;
+    transition: opacity var(--transition-smooth);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: spinBorder 6s linear infinite;
+  }
+  .studio-card:hover::before, .refinement-glass-card:hover::before, .intent-box:hover::before,
+  .studio-card:focus-within::before, .refinement-glass-card:focus-within::before, .intent-box:focus-within::before {
+    opacity: 1;
+  }
+  @keyframes spinBorder {
+    to { --angle: 360deg; }
+  }
+}
+
+/* 3D hero terminal */
+.hero-terminal-wrapper {
+  perspective: 1200px;
+}
+.glass-terminal {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.glass-terminal:hover {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px);
+}
+
+/* Entrances: pure CSS for dynamic cards, JS-driven reveal for static blocks */
+.recommendation-card, .refined-items-grid > * {
+  animation: cardIn .55s var(--transition-smooth) both;
+}
+.recommendation-card:nth-child(2) { animation-delay: .07s; }
+.recommendation-card:nth-child(3) { animation-delay: .14s; }
+.recommendation-card:nth-child(4) { animation-delay: .21s; }
+.recommendation-card:nth-child(n+5) { animation-delay: .28s; }
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .7s var(--transition-smooth), transform .7s var(--transition-smooth);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Mobile nav */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--bg-glass-active);
+  border: 1px solid var(--border-medium);
+  color: #fff;
+  cursor: pointer;
+}
+.nav-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+@media (max-width: 768px) {
+  .nav-toggle { display: inline-flex; }
+  .nav-container {
+    flex-wrap: wrap;
+    gap: .5rem;
+    border-radius: var(--radius-lg);
+    padding: .6rem .9rem;
+  }
+  .nav-actions { margin-left: auto; }
+  .engine-status-pill, .nav-actions .btn span, .brand-subtitle { display: none; }
+  .nav-actions .btn { padding: .5rem .65rem; }
+  .nav-menu {
+    display: none;
+    order: 5;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: .5rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .nav-menu.open {
+    display: flex;
+    animation: fadeInPanel .25s ease-out;
+  }
+  .nav-link { padding: .8rem 1rem; }
+  .hero-cta-group, .hero-metrics, .save-vault-content, .intent-interactive-bar, .feedback-btn-group {
+    flex-wrap: wrap;
+  }
+  .hero-section { padding: 3.5rem 0 3rem; }
+  .results-meta-bar {
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-radius: var(--radius-lg);
+  }
+  .glow-orb { filter: blur(70px); }
+  .nav-container, .studio-card, .glass-terminal { backdrop-filter: blur(12px); }
+  .recommendation-card { padding: 1.25rem; }
+}
+@media (hover: none) {
+  .glass-terminal { transform: none !important; }
+}
+
+/* Graceful fallbacks */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav-container, .studio-card, .glass-terminal, .modal-card, .recommendation-card, .toast {
+    background: #0d121f;
+  }
+}
+@media (prefers-contrast: more) {
+  :root {
+    --border-medium: rgba(255, 255, 255, .4);
+    --text-muted: #c3cde0;
+  }
+}
+@media (forced-colors: active) {
+  .btn, .chip-tag, .quick-pill, .tab-btn {
+    border: 1px solid ButtonText;
+  }
+}
+
+/* Reduced motion: keep content, drop movement */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  .glass-terminal { transform: none !important; }
+  .glow-orb { animation: none; }
+}
