@@ -409,4 +409,3 @@ End of Report
 - **Course:** 24CS2506 — Building Applications using GPT-4
 - **Curriculum:** B.Tech Computer Science and Engineering (AI & Data Science)
 - **Experiment:** Ex. No. 4: Personalized Recommendation System
-- **Developed by:** Deepak Krishnan S U
